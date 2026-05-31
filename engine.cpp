@@ -86,6 +86,93 @@ int Engine::negamax(Board& board, int depth, int alpha, int beta, Color side) {
     return alpha;
 }
 
+static const int pawnTable[64] = {
+    0, 0, 0, 0, 0, 0, 0, 0,
+    5, 10, 10, -20, -20, 10, 10, 5,
+    5, -5, -10, 0, 0, -10, -5, 5,
+    0, 0, 0, 20, 20, 0, 0, 0,
+    5, 5, 10, 25, 25, 10, 5, 5,
+    10, 10, 20, 30, 30, 20, 10, 10,
+    50, 50, 50, 50, 50, 50, 50, 50,
+    0, 0, 0, 0, 0, 0, 0, 0
+};
+
+static const int knightTable[64] = {
+    -50, -40, -30, -30, -30, -30, -40, -50,
+    -40, -20, 0, 0, 0, 0, -20, -40,
+    -30, 0, 10, 15, 15, 10, 0, -30,
+    -30, 5, 15, 20, 20, 15, 5, -30,
+    -30, 0, 15, 20, 20, 15, 0, -30,
+    -30, 5, 10, 15, 15, 10, 5, -30,
+    -40, -20, 0, 5, 5, 0, -20, -40,
+    -50, -40, -30, -30, -30, -30, -40, -50
+};
+
+static const int bishopTable[64] = {
+    -20, -10, -10, -10, -10, -10, -10, -20,
+    -10, 0, 0, 0, 0, 0, 0, -10,
+    -10, 0, 5, 10, 10, 5, 0, -10,
+    -10, 5, 5, 10, 10, 5, 5, -10,
+    -10, 0, 10, 10, 10, 10, 0, -10,
+    -10, 10, 10, 10, 10, 10, 10, -10,
+    -10, 5, 0, 0, 0, 0, 5, -10,
+    -20, -10, -10, -10, -10, -10, -10, -20
+};
+
+static const int rookTable[64] = {
+    0, 0, 0, 0, 0, 0, 0, 0,
+    5, 10, 10, 10, 10, 10, 10, 5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    -5, 0, 0, 0, 0, 0, 0, -5,
+    0, 0, 0, 5, 5, 0, 0, 0
+};
+
+static const int queenTable[64] = {
+    -20, -10, -10, -5, -5, -10, -10, -20,
+    -10, 0, 0, 0, 0, 0, 0, -10,
+    -10, 0, 5, 5, 5, 5, 0, -10,
+    -5, 0, 5, 5, 5, 5, 0, -5,
+    0, 0, 5, 5, 5, 5, 0, -5,
+    -10, 5, 5, 5, 5, 5, 0, -10,
+    -10, 0, 5, 0, 0, 0, 0, -10,
+    -20, -10, -10, -5, -5, -10, -10, -20
+};
+
+static const int kingTable[64] = {
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -20, -30, -30, -40, -40, -30, -30, -20,
+    -10, -20, -20, -20, -20, -20, -20, -10,
+    20, 20, 0, 0, 0, 0, 20, 20,
+    20, 30, 10, 0, 0, 10, 30, 20
+};
+
+// Returns a piece-square table value for a piece on a square.
+int Engine::pstValue(PieceType type, Color color, int x, int y) const {
+    const int index = (color == WHITE) ? (y * 8 + x) : ((7 - y) * 8 + x);
+    switch (type) {
+        case PAWN:
+            return pawnTable[index];
+        case KNIGHT:
+            return knightTable[index];
+        case BISHOP:
+            return bishopTable[index];
+        case ROOK:
+            return rookTable[index];
+        case QUEEN:
+            return queenTable[index];
+        case KING:
+            return kingTable[index];
+        default:
+            return 0;
+    }
+}
+
 // Evaluates the board material from the given side's perspective.
 int Engine::evaluate(const Board& board, Color side) const {
     int score = 0;
@@ -117,6 +204,7 @@ int Engine::evaluate(const Board& board, Color side) const {
                     break;
             }
 
+            value += pstValue(p.type, p.color, x, y);
             if (p.color == WHITE) {
                 score += value;
             } else if (p.color == BLACK) {

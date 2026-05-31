@@ -29,6 +29,9 @@ private:
     // Runs negamax search with alpha-beta pruning.
     int negamax(Board& board, int depth, int alpha, int beta, Color side);
 
+    // Returns a piece-square table value for a piece on a square.
+    int pstValue(PieceType type, Color color, int x, int y) const;
+
     // Evaluates the board material from the given side's perspective.
     int evaluate(const Board& board, Color side) const;
 };
