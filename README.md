@@ -1,50 +1,92 @@
 # Kaspara ♟️
 
-A terminal chess engine written in C++, named after Garry Kasparov.
+<p align="center">
+  <img src="assets/kaspara-demo.gif" alt="Kaspara Demo" width="800">
+</p>
+
+<p align="center">
+  A C++ chess engine featuring Minimax, Alpha-Beta Pruning, and positional evaluation.
+</p>
+
+A terminal-based chess engine written in **C++** by **Mousam Kumawat**.
+
+Kaspara was built to explore classical game AI concepts such as **Minimax**, **Alpha-Beta Pruning**, and **board evaluation techniques** while strengthening my understanding of algorithms, data structures, and systems programming.
 
 ## Features
 
-- All legal chess moves including castling, en passant, and pawn promotion
-- Minimax with alpha-beta pruning at depth 4
-- Piece-square table positional evaluation
-- Displays depth, nodes, and nodes per second after each engine move
-- Human vs engine terminal play
-- Clean C++11 codebase that is easy to read and extend
+- Complete legal chess move generation
+- Castling, En Passant, and Pawn Promotion
+- Minimax Search with Alpha-Beta Pruning
+- Piece-Square Table Evaluation
+- Human vs Engine Gameplay
+- Search Statistics (Depth, Nodes, NPS)
 
 ## Build & Run
 
-Build with Make:
-
-```
+```bash
 make
+./kaspara
 ```
 
-Or build directly:
+Or:
 
-```
+```bash
 g++ -std=c++11 -O2 -o kaspara main.cpp board.cpp engine.cpp
-```
-
-Run:
-
-```
 ./kaspara
 ```
 
 ## How to Play
 
-- Enter moves in UCI format, e.g. `e2e4`
-- Use `e7e8q` for promotion to queen (or `r`, `b`, `n`)
-- Type `quit` to exit
+Enter moves using UCI notation:
 
-## How the Engine Works
+```text
+e2e4
+g1f3
+e7e8q
+```
 
-Kaspara searches ahead with minimax to pick the move that maximizes its advantage. Alpha-beta pruning skips branches that cannot improve the result, speeding up the search. Piece-square tables add a positional bonus or penalty to each piece based on its square, encouraging strong placement on the board.
+For promotion:
+- `q` = Queen
+- `r` = Rook
+- `b` = Bishop
+- `n` = Knight
+
+Type `quit` to exit.
+
+## Concepts Demonstrated
+
+- Data Structures & Algorithms
+- Recursion
+- Minimax Algorithm
+- Alpha-Beta Pruning
+- Game Tree Search
+- Heuristic Evaluation
+- Object-Oriented Programming
 
 ## Performance
 
-Searches ~394,000 positions per second at depth 4.
+- Search Depth: 4
+- ~394,000 positions evaluated per second
+- ~26,000 nodes evaluated per move at depth 4
+
+## Future Improvements
+
+- Iterative Deepening
+- Transposition Tables
+- Opening Book
+- UCI Protocol Support
+- Stronger Evaluation Function
+
+## Author
+
+**Mousam Kumawat**
+
+Computer Science Engineering Student
+
+LinkedIn: https://linkedin.com/in/mousam-kumawat
 
 ## License
 
-MIT
+MIT License
+
+Copyright (c) 2026 Mousam Kumawat
